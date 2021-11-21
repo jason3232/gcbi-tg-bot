@@ -57,7 +57,7 @@ def greet_chat_members(update: Update, context: CallbackContext) -> None:
             clean_message,
             MESSAGE_TIMEOUT,
             context={
-                "chat_id": update.message.chat_id,
+                "chat_id": message.chat.id,
                 "message_id": message.message_id
             }
         )
@@ -109,7 +109,7 @@ def start(update: Update, context: CallbackContext) -> None:
             clean_message,
             MESSAGE_TIMEOUT,
             context={
-                "chat_id": update.message.chat_id,
+                "chat_id": message.chat.id,
                 "message_id": message.message_id
             }
         )
@@ -131,7 +131,7 @@ def help_command(update: Update, context: CallbackContext) -> None:
             clean_message,
             MESSAGE_TIMEOUT,
             context={
-                "chat_id": update.message.chat_id,
+                "chat_id": message.chat.id,
                 "message_id": message.message_id
             }
         )
