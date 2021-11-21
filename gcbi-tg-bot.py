@@ -52,7 +52,7 @@ def greet_chat_members(update: Update, context: CallbackContext) -> None:
             parse_mode=ParseMode.HTML,
         )
 
-    if message and message.chat.type == "group":
+    if message and message.chat.type != "private":
         context.job_queue.run_once(
             clean_message,
             MESSAGE_TIMEOUT,
@@ -104,7 +104,7 @@ def start(update: Update, context: CallbackContext) -> None:
         text="I'm a bot, please talk to me!"
     )
 
-    if message.chat.type == "group":
+    if message and message.chat.type != "private":
         context.job_queue.run_once(
             clean_message,
             MESSAGE_TIMEOUT,
@@ -126,7 +126,7 @@ def help_command(update: Update, context: CallbackContext) -> None:
         "QoS5jRMDHIhQEK-i05g9aHtPA/edit?usp=sharing\">計劃詳情</a>",
         parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
-    if message.chat.type == "group":
+    if message and message.chat.type != "private":
         context.job_queue.run_once(
             clean_message,
             MESSAGE_TIMEOUT,
