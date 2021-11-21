@@ -33,7 +33,7 @@ def greet_chat_members(update: Update, context: CallbackContext) -> None:
         logger.info("new user joined the group, username: {}".format(
             update.chat_member.new_chat_member.user.full_name))
 
-        update.effective_chat.send_message(
+        message = update.effective_chat.send_message(
             f"歡迎 {member_name} 加入GCBI有問必答. Welcome!\n"
             "發問前可以先參考 <a href=\"https://docs.google.com/presentation/d/1QnfLG"
             "8HGZb8TuwbEyeQoS5jRMDHIhQEK-i05g9aHtPA/edit?usp=sharing\">計劃詳情</a>\n"
@@ -47,9 +47,19 @@ def greet_chat_members(update: Update, context: CallbackContext) -> None:
         logger.info("user left the group, username: {}".format(
             update.chat_member.new_chat_member.user.full_name))
 
-        update.effective_chat.send_message(
+        message = update.effective_chat.send_message(
             f"bye bye {member_name} 得閒飲茶",
             parse_mode=ParseMode.HTML,
+        )
+
+    if message and message.chat.type == "group":
+        context.job_queue.run_once(
+            clean_message,
+            MESSAGE_TIMEOUT,
+            context={
+                "chat_id": update.message.chat_id,
+                "message_id": message.message_id
+            }
         )
 
 
@@ -109,7 +119,7 @@ def help_command(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
     message = update.message.reply_text(
         "傳送門\n"
-        "<a href=\"https: // forms.gle/DFpj8kfLFfs3D8zu9\">申請表格</a>\n"
+        "<a href=\"https://forms.gle/DFpj8kfLFfs3D8zu9\">申請表格</a>\n"
         "Email： gcbi.toronto@gmail.com\n"
         "<a href=\"https://gcbinorth.com/\">GCBI North offical website </a>\n"
         "<a href=\"https://docs.google.com/presentation/d/1QnfLG8HGZb8TuwbEye"
